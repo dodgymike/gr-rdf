@@ -1,19 +1,24 @@
 <?xml version="1.0"?>
 <block>
-  <name>stream-switcher</name>
-  <key>rdf_stream-switcher</key>
+  <name>stream_switcher</name>
+  <key>rdf_stream_switcher</key>
   <category>rdf</category>
   <import>import rdf</import>
-  <make>rdf.stream-switcher($vec_length, $samples_per_switch)</make>
+  <make>rdf.stream_switcher($vec_length, $samples_per_switch)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name
        * key (makes the value accessible as $keyname, e.g. in the make node)
        * type -->
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>vec length</name>
+    <key>vec_length</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Samples per switch</name>
+    <key>samples_per_switch</key>
+    <type>int</type>
   </param>
 
   <!-- Make one 'sink' node per input. Sub-nodes:
@@ -23,7 +28,8 @@
        * optional (set to 1 for optional inputs) -->
   <sink>
     <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
+    <vlen>$vec_length</vlen>
   </sink>
 
   <!-- Make one 'source' node per output. Sub-nodes:
@@ -33,6 +39,7 @@
        * optional (set to 1 for optional inputs) -->
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
+    <vlen>1</vlen>
   </source>
 </block>

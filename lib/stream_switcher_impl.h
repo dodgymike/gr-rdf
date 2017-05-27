@@ -18,39 +18,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifndef INCLUDED_RDF_STREAM_SWITCHER_IMPL_H
+#define INCLUDED_RDF_STREAM_SWITCHER_IMPL_H
 
-#ifndef INCLUDED_RDF_STREAM_SWITCHER_H
-#define INCLUDED_RDF_STREAM_SWITCHER_H
-
-#include <rdf/api.h>
-#include <gnuradio/sync_block.h>
+#include <rdf/stream_switcher.h>
 
 namespace gr {
   namespace rdf {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup rdf
-     *
-     */
-    class RDF_API stream_switcher : virtual public gr::sync_block
+    class stream_switcher_impl : public stream_switcher
     {
-     public:
-      typedef boost::shared_ptr<stream_switcher> sptr;
+     private:
+      // Nothing to declare in this block.
+	int m_current_stream_index;
+	int m_samples_per_switch;
+	int m_current_sample_count;
+	int m_vec_length;
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of rdf::stream_switcher.
-       *
-       * To avoid accidental use of raw pointers, rdf::stream_switcher's
-       * constructor is in a private implementation
-       * class. rdf::stream_switcher::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(vec_length = 1, samples_per_switch = 1);
+     public:
+      stream_switcher_impl(int vec_length, int samples_per_switch);
+      ~stream_switcher_impl();
+
+      // Where all the action really happens
+      int work(int noutput_items,
+         gr_vector_const_void_star &input_items,
+         gr_vector_void_star &output_items);
     };
 
   } // namespace rdf
 } // namespace gr
 
-#endif /* INCLUDED_RDF_STREAM_SWITCHER_H */
+#endif /* INCLUDED_RDF_STREAM_SWITCHER_IMPL_H */
 

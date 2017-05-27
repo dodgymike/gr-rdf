@@ -22,5 +22,5 @@
 ########################################################################
 install(FILES
     api.h
-    stream-switcher.h DESTINATION include/rdf
+    stream_switcher.h DESTINATION include/rdf
 )

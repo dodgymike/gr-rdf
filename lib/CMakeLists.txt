@@ -26,7 +26,7 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND rdf_sources
-    stream-switcher_impl.cc
+    stream_switcher_impl.cc
 )
 
 set(rdf_sources "${rdf_sources}" PARENT_SCOPE)

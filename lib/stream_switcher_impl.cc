@@ -23,13 +23,13 @@
 #endif
 
 #include <gnuradio/io_signature.h>
-#include "stream-switcher_impl.h"
+#include "stream_switcher_impl.h"
 
 namespace gr {
   namespace rdf {
 
     stream_switcher::sptr
-    stream_switcher::make(vec_length, samples_per_switch)
+    stream_switcher::make(int vec_length, int samples_per_switch)
     {
       return gnuradio::get_initial_sptr
         (new stream_switcher_impl(vec_length, samples_per_switch));
@@ -38,9 +38,9 @@ namespace gr {
     /*
      * The private constructor
      */
-    stream_switcher_impl::stream_switcher_impl(vec_length, samples_per_switch)
+    stream_switcher_impl::stream_switcher_impl(int vec_length, int samples_per_switch)
       : gr::sync_block("stream_switcher",
-              gr::io_signature::make(vec_length, vec_length, sizeof(gr_complex)),
+              gr::io_signature::make(1, 1, vec_length * sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex)))
     {
 	m_current_stream_index = 0;
@@ -64,20 +64,22 @@ namespace gr {
 	gr_complex *out = (gr_complex *) output_items[0];
 
 	if(m_current_sample_count++ >= m_samples_per_switch) {
+		m_current_sample_count = 0;
 		m_current_stream_index++;
+		//std::cerr << "bumping stream index" << std::endl;
 	}
 
 	if(m_current_stream_index > (m_vec_length) - 1) {
 		m_current_stream_index = 0;
 	}
 
-	const gr_complex *in = (const gr_complex *) input_items[m_current_stream_index];
+	//const gr_complex *in = (const gr_complex *) input_items[m_current_stream_index];
+	const gr_complex *in = (const gr_complex *) input_items[0];
 
-	for(int i = 0; i < noutput_items; i++) {
-		out[0] = in[0];
-	}
+		out[0] = in[m_current_stream_index];
 	
-	return noutput_items;
+	//return noutput_items;
+	return 1;
     }
 
   } /* namespace rdf */

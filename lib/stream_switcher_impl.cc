@@ -61,25 +61,35 @@ namespace gr {
         gr_vector_const_void_star &input_items,
         gr_vector_void_star &output_items)
     {
+	const gr_complex *in = (const gr_complex *) input_items[0];
 	gr_complex *out = (gr_complex *) output_items[0];
 
-	if(m_current_sample_count++ >= m_samples_per_switch) {
-		m_current_sample_count = 0;
-		m_current_stream_index++;
-		//std::cerr << "bumping stream index" << std::endl;
-	}
+	//const int vec_size = m_vec_length * sizeof(gr_complex);
 
-	if(m_current_stream_index > (m_vec_length) - 1) {
-		m_current_stream_index = 0;
-	}
-
-	//const gr_complex *in = (const gr_complex *) input_items[m_current_stream_index];
-	const gr_complex *in = (const gr_complex *) input_items[0];
-
-		out[0] = in[m_current_stream_index];
+	int output_count = 0;
+	int size = noutput_items;
+	while(size > 0) {
+		if(m_current_sample_count >= m_samples_per_switch) {
+			m_current_sample_count = 0;
+			m_current_stream_index++;
+			m_current_stream_index %= m_vec_length;
+			if(m_current_stream_index >= m_vec_length) {
+				m_current_stream_index = 0;
+			}
+		}
+		m_current_sample_count += m_vec_length;
 	
-	//return noutput_items;
-	return 1;
+	
+		//out[0] = in[m_current_stream_index];
+		*out++ = *(in + m_current_stream_index);
+		in += m_vec_length;
+
+		size -= m_vec_length;
+
+		output_count++;
+	}
+
+	return output_count;
     }
 
   } /* namespace rdf */

@@ -27,6 +27,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND rdf_sources
     stream_switcher_impl.cc
+    simple_derivative_impl.cc
+    transition_counter_impl.cc
 )
 
 set(rdf_sources "${rdf_sources}" PARENT_SCOPE)

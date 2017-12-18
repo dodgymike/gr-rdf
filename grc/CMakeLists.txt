@@ -18,5 +18,7 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    rdf_stream_switcher.xml DESTINATION share/gnuradio/grc/blocks
+    rdf_stream_switcher.xml
+    rdf_simple_derivative.xml
+    rdf_transition_counter.xml DESTINATION share/gnuradio/grc/blocks
 )
